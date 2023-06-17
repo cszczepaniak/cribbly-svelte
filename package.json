@@ -38,6 +38,7 @@
 		"@auth/sveltekit": "^0.3.3",
 		"@trpc/client": "^10.30.0",
 		"@trpc/server": "^10.30.0",
-		"trpc-sveltekit": "^3.5.14"
+		"trpc-sveltekit": "^3.5.14",
+		"zod": "^3.21.4"
 	}
 }
