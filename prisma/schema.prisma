@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["referentialIntegrity", "interactiveTransactions"]
+}
+
+datasource db {
+    provider             = "mysql"
+    url                  = env("DATABASE_URL")
+    referentialIntegrity = "prisma"
+}
+
+model Player {
+    id String @id @default(cuid())
+
+    firstName String
+    lastName  String
+
+    team   Team?   @relation(fields: [teamID], references: [id])
+    teamID String?
+}
+
+model Team {
+    id String @id @default(cuid())
+
+    players Player[]
+
+    division   Division? @relation(fields: [divisionID], references: [id])
+    divisionID String?
+}
+
+model Division {
+    id String @id @default(cuid())
+
+    name  String
+    teams Team[]
+    games Game[]
+}
+
+model Game {
+    id String @id @default(cuid())
+
+    team1ID String
+    team2ID String
+    kind    Int
+
+    winner     String?
+    loserScore Int?
+
+    division   Division @relation(fields: [divisionID], references: [id])
+    divisionID String
+
+    // Unique index to ensure each team can only see each other once in the prelims and once in the tournament
+    @@unique([team1ID, team2ID, kind])
+    // Index by team2 so we can lookup by team2 efficiently; the unique index above covers team1
+    @@index([team2ID])
+    @@index([winner])
+    @@index([kind])
+}
+
+model Admin {
+    email String @id
+}

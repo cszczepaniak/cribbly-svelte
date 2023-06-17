@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.button {
+    @apply bg-blue-700 hover:bg-blue-600 text-slate-100 w-full rounded-md p-4 text-2xl font-semibold disabled:bg-blue-300;
+}
