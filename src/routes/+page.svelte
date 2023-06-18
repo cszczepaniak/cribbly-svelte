@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { signIn, signOut } from '@auth/sveltekit/client';
-	import { page } from '$app/stores';
-	let name = $page.data.session?.user?.name ?? 'no signed in user';
+	import { signIn, signOut } from "@auth/sveltekit/client";
+	import { page } from "$app/stores";
+	let name = $page.data.session?.user?.email ?? "no signed in user";
 </script>
 
 <head>
@@ -33,4 +33,8 @@
 			<button class="button">Admin Page</button>
 		</a>
 	</div>
+
+	<pre>
+		{JSON.stringify($page, null, 2)}
+	</pre>
 </div>
