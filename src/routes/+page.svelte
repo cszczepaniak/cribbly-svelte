@@ -29,9 +29,11 @@
 	<div class="flex flex-row space-x-2 w-max">
 		<button class="button" on:click={() => signIn()}>Sign In</button>
 		<button class="button" on:click={() => signOut()}>Sign Out</button>
-		<a href="/admin">
-			<button class="button">Admin Page</button>
-		</a>
+		{#if $page.data.isAdmin}
+			<a href="/admin">
+				<button class="button">Admin Page</button>
+			</a>
+		{/if}
 	</div>
 
 	<pre>
