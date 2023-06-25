@@ -5,3 +5,7 @@
 .button {
 	@apply bg-blue-700 hover:bg-blue-600 text-slate-100 w-full rounded-md p-4 text-2xl font-semibold disabled:bg-blue-300;
 }
+
+.input {
+	@apply text-2xl outline-none border border-gray-600 p-2 rounded-md focus:border-blue-600 shadow-sm w-full;
+}

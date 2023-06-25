@@ -1,4 +1,9 @@
-export const getTeamName = (players: { firstName: string; lastName: string }[] | undefined) => {
+interface Player {
+	firstName: string;
+	lastName: string;
+}
+
+export const getTeamName = (players: Player[] | undefined) => {
 	if (players === undefined) {
 		return "<undefined>";
 	}

@@ -1,31 +1,57 @@
 <script lang="ts">
 	import "../app.css";
 	import { page } from "$app/stores";
-	import { Hamburger } from "svelte-hamburgers";
 	import { signIn, signOut } from "@auth/sveltekit/client";
-	let open = false;
+	import {
+		Avatar,
+		Dropdown,
+		DropdownHeader,
+		DropdownItem,
+		DropdownDivider,
+		Navbar,
+		NavBrand,
+		NavHamburger,
+		NavUl,
+		NavLi,
+	} from "flowbite-svelte";
 </script>
 
-<div class="bg-blue-700">
-	<Hamburger bind:open --color="white" />
-</div>
-
-{#if open}
-	<nav class="bg-blue-700">
-		<ul class="flex flex-col items-center space-y-6 text-white text-xl py-2 px-4">
-			<li><a href="/">Home</a></li>
-			<li><a href="/games">Games</a></li>
-			<li><a href="/standings">Standings</a></li>
-			{#if $page.data.isAdmin}
-				<li><a href="/admin">Admin</a></li>
+<Navbar let:hidden let:toggle>
+	<NavBrand href="/">
+		<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+			Cribbly
+		</span>
+	</NavBrand>
+	<NavUl {hidden} class="text-">
+		<NavLi><a href="/">Home</a></NavLi>
+		<NavLi><a href="/games">Games</a></NavLi>
+		<NavLi><a href="/standings">Standings</a></NavLi>
+		{#if $page.data.isAdmin}
+			<NavLi><a href="/admin">Admin</a></NavLi>
+		{/if}
+		{#if !$page.data.session?.user}
+			<NavLi><button on:click={signIn}>Sign In</button></NavLi>
+		{/if}
+		<div class="flex items-center md:order-2">
+			{#if $page.data.session?.user}
+				{#if $page.data.session?.user?.image}
+					<Avatar id="avatar-menu" src={$page.data.session?.user?.image} class="cursor-pointer" />
+				{/if}
+				<Dropdown placement="bottom" triggeredBy="#avatar-menu">
+					<DropdownHeader>
+						<span class="block text-sm">{$page.data.session.user.name}</span>
+						<span class="block truncate text-sm font-medium">{$page.data.session.user.email}</span>
+					</DropdownHeader>
+					<DropdownItem>Dashboard</DropdownItem>
+					<DropdownItem>Settings</DropdownItem>
+					<DropdownItem>Earnings</DropdownItem>
+					<DropdownDivider />
+					<DropdownItem on:click={signOut}>Sign out</DropdownItem>
+				</Dropdown>
 			{/if}
-			{#if !$page.data.session?.user}
-				<li><button on:click={signIn}>Sign In</button></li>
-			{:else}
-				<li><button on:click={signOut}>Sign Out</button></li>
-			{/if}
-		</ul>
-	</nav>
-{/if}
+			<NavHamburger on:click={toggle} />
+		</div></NavUl
+	>
+</Navbar>
 
 <slot />
