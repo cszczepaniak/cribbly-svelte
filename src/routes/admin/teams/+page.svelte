@@ -44,74 +44,72 @@
 	};
 </script>
 
-<main class="mx-auto container">
-	<div class="flex">
-		<h1 class="text-3xl mb-4 mr-4">Teams</h1>
+<div class="flex">
+	<h1 class="text-3xl mb-4 mr-4">Teams</h1>
 
-		<form method="POST" action="?/newTeam" use:enhance>
-			<button>
-				<Plus />
-			</button>
-		</form>
-	</div>
-	<Table>
-		<colgroup>
-			<col span="1" style="width: 6%;" />
-			<col span="1" style="width: 47%;" />
-			<col span="1" style="width: 47%;" />
-		</colgroup>
+	<form method="POST" action="?/newTeam" use:enhance>
+		<button>
+			<Plus />
+		</button>
+	</form>
+</div>
+<Table>
+	<colgroup>
+		<col span="1" style="width: 6%;" />
+		<col span="1" style="width: 47%;" />
+		<col span="1" style="width: 47%;" />
+	</colgroup>
 
-		<TableHead>
-			<TableHeadCell />
-			<TableHeadCell>Players</TableHeadCell>
-			<TableHeadCell>Division</TableHeadCell>
-		</TableHead>
-		<TableBody class="divide-y">
-			{#each data.teams as team}
-				<TableBodyRow>
-					<TableBodyCell class="flex items-center space-x-6">
-						<form method="POST" use:enhance action="?/removeTeam">
-							<input type="hidden" name="id" value={team.id} />
-							<button>
-								<Delete />
-							</button>
-						</form>
-					</TableBodyCell>
-					<TableBodyCell>
-						<button
-							class="mr-6"
-							type="button"
-							on:click={() => {
-								showTeamModal = true;
-								selectedTeam = team;
-							}}
-						>
-							<Edit />
+	<TableHead>
+		<TableHeadCell />
+		<TableHeadCell>Players</TableHeadCell>
+		<TableHeadCell>Division</TableHeadCell>
+	</TableHead>
+	<TableBody class="divide-y">
+		{#each data.teams as team}
+			<TableBodyRow>
+				<TableBodyCell class="flex items-center space-x-6">
+					<form method="POST" use:enhance action="?/removeTeam">
+						<input type="hidden" name="id" value={team.id} />
+						<button>
+							<Delete />
 						</button>
-						<span>
-							{getPlayers(team.players)}
-						</span>
-					</TableBodyCell>
-					<TableBodyCell>
-						<button
-							class="mr-6"
-							type="button"
-							on:click={() => {
-								showDivisionModal = true;
-								selectedTeam = team;
-							}}
-						>
-							<Edit />
-						</button>
-						<span>
-							{team.divisionID ? team.divisionID : "No Division"}
-						</span>
-					</TableBodyCell>
-				</TableBodyRow>
-			{/each}
-		</TableBody>
-	</Table>
-</main>
+					</form>
+				</TableBodyCell>
+				<TableBodyCell>
+					<button
+						class="mr-6"
+						type="button"
+						on:click={() => {
+							showTeamModal = true;
+							selectedTeam = team;
+						}}
+					>
+						<Edit />
+					</button>
+					<span>
+						{getPlayers(team.players)}
+					</span>
+				</TableBodyCell>
+				<TableBodyCell>
+					<button
+						class="mr-6"
+						type="button"
+						on:click={() => {
+							showDivisionModal = true;
+							selectedTeam = team;
+						}}
+					>
+						<Edit />
+					</button>
+					<span>
+						{team.divisionID ? team.divisionID : "No Division"}
+					</span>
+				</TableBodyCell>
+			</TableBodyRow>
+		{/each}
+	</TableBody>
+</Table>
 
 <Modal bind:open={showDivisionModal} class="py-4">
 	<div class="sticky top-0 bg-white dark:bg-gray-800 border-b-2 p-2 mt-4">

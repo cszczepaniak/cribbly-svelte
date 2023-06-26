@@ -1,3 +1,3 @@
-<main class="p-4">
+<main class="mx-auto container py-4">
 	<slot />
 </main>
