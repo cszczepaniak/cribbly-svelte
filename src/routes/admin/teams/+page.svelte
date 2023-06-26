@@ -1,92 +1,187 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
 	import type { PageData } from "./$types";
-	import { getTeamName } from "$lib/utils/teams";
-	import Modal from "$lib/components/modal.svelte";
-	import "iconify-icon";
+	import {
+		Modal,
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		TableHead,
+		TableHeadCell,
+	} from "flowbite-svelte";
+	import { Delete, Edit, Minus, Plus } from "$lib/components/icons";
+	import type { Player } from "@prisma/client";
 
-	let showModal = false;
+	let showTeamModal = false;
+	let showDivisionModal = false;
 
 	export let data: PageData;
 
-	let modalTeam: (typeof data.teams)[number];
+	let selectedTeam: (typeof data.teams)[number];
+
+	let playerList: Player[] = [];
+	$: {
+		if (!selectedTeam) {
+			playerList = [];
+		} else {
+			playerList = selectedTeam.players;
+		}
+	}
+
+	let division = "No Division";
+	$: {
+		if (selectedTeam?.divisionID) {
+			division = selectedTeam.divisionID;
+		}
+	}
+
+	const getPlayers = (players: { firstName: string; lastName: string }[]) => {
+		if (!players || players.length === 0) {
+			return "No Players";
+		}
+		return players.map((p) => `${p.firstName} ${p.lastName}`).join(", ");
+	};
 </script>
 
-<h1 class="text-3xl mb-4">Teams</h1>
-<form method="POST" action="?/newTeam" use:enhance>
-	<button class="button max-w-sm">Add</button>
-</form>
-{#each data.teams as team}
-	<form
-		method="POST"
-		use:enhance
-		action="?/removeTeam"
-		class="text-lg flex justify-between my-2 max-w-2xl"
-	>
-		{getTeamName(team.players)}
-		<input type="hidden" name="id" value={team.id} />
-		<div class="flex max-w-lg justify-between space-x-4">
-			<button
-				type="button"
-				class="button"
-				on:click={() => {
-					showModal = true;
-					modalTeam = team;
-				}}>edit</button
-			>
-			<button class="bg-red-100 px-2 rounded border border-red-600">Delete</button>
-		</div>
-	</form>
-{/each}
+<main class="mx-auto container">
+	<div class="flex">
+		<h1 class="text-3xl mb-4 mr-4">Teams</h1>
 
-<Modal bind:showModal>
-	{#if !modalTeam}
-		<p>no team selected</p>
-	{:else}
-		<div class="min-w-[400px] min-h-[300px] max-h-[300px] overflow-scroll">
-			<div class="sticky top-0 bg-white border-b-2 p-2">
-				{#if modalTeam.players.length == 0}
-					<p>No players!</p>
-				{:else}
-					{#each modalTeam?.players as player}
-						<form
-							method="POST"
-							action="?/removePlayerFromTeam"
-							class="flex justify-between"
-							use:enhance
-							on:submit={() => {
-								modalTeam.players = modalTeam.players.filter((p) => p.id !== player.id);
-								modalTeam = modalTeam;
+		<form method="POST" action="?/newTeam" use:enhance>
+			<button>
+				<Plus />
+			</button>
+		</form>
+	</div>
+	<Table>
+		<colgroup>
+			<col span="1" style="width: 6%;" />
+			<col span="1" style="width: 47%;" />
+			<col span="1" style="width: 47%;" />
+		</colgroup>
+
+		<TableHead>
+			<TableHeadCell />
+			<TableHeadCell>Players</TableHeadCell>
+			<TableHeadCell>Division</TableHeadCell>
+		</TableHead>
+		<TableBody class="divide-y">
+			{#each data.teams as team}
+				<TableBodyRow>
+					<TableBodyCell class="flex items-center space-x-6">
+						<form method="POST" use:enhance action="?/removeTeam">
+							<input type="hidden" name="id" value={team.id} />
+							<button>
+								<Delete />
+							</button>
+						</form>
+					</TableBodyCell>
+					<TableBodyCell>
+						<button
+							class="mr-6"
+							type="button"
+							on:click={() => {
+								showTeamModal = true;
+								selectedTeam = team;
 							}}
 						>
-							<p>{player?.firstName} {player?.lastName}</p>
-							<button>Remove</button>
-							<input type="hidden" name="playerID" value={player.id} />
-							<input type="hidden" name="teamID" value={modalTeam.id} />
-						</form>
-					{/each}
-				{/if}
-			</div>
+							<Edit />
+						</button>
+						<span>
+							{getPlayers(team.players)}
+						</span>
+					</TableBodyCell>
+					<TableBodyCell>
+						<button
+							class="mr-6"
+							type="button"
+							on:click={() => {
+								showDivisionModal = true;
+								selectedTeam = team;
+							}}
+						>
+							<Edit />
+						</button>
+						<span>
+							{team.divisionID ? team.divisionID : "No Division"}
+						</span>
+					</TableBodyCell>
+				</TableBodyRow>
+			{/each}
+		</TableBody>
+	</Table>
+</main>
 
-			<div class="p-2">
-				{#each data.playersWithoutTeams as player}
+<Modal bind:open={showDivisionModal} class="py-4">
+	<div class="sticky top-0 bg-white dark:bg-gray-800 border-b-2 p-2 mt-4">
+		{division}
+	</div>
+
+	<div class="p-2">
+		{#each data.divisions as division}
+			<form method="POST" action="?/addTeamToDivision" class="flex justify-between" use:enhance>
+				<span>{division.name}</span>
+				<button>
+					<Plus />
+				</button>
+				<input type="hidden" name="playerID" value={division.id} />
+			</form>
+		{/each}
+	</div>
+</Modal>
+
+<Modal bind:open={showTeamModal} class="py-4">
+	<div class="max-h-96 overflow-scroll">
+		<div class="sticky top-0 bg-white dark:bg-gray-800 border-b-2 p-2 mt-4">
+			{#if playerList.length == 0}
+				<p>No players!</p>
+			{:else}
+				{#each playerList as player}
 					<form
 						method="POST"
-						action="?/addPlayerToTeam"
+						action="?/removePlayerFromTeam"
 						class="flex justify-between"
 						use:enhance
 						on:submit={() => {
-							modalTeam.players.push(player);
-							modalTeam = modalTeam;
+							selectedTeam.players = selectedTeam.players.filter((p) => p.id !== player.id);
+							selectedTeam = selectedTeam;
 						}}
 					>
-						<span>{player.firstName} {player.lastName}</span>
-						<button>Add to Team</button>
+						<p>{player?.firstName} {player?.lastName}</p>
+						<button class="hover:text-gray-50 disabled:text-gray-600">
+							<Minus />
+						</button>
 						<input type="hidden" name="playerID" value={player.id} />
-						<input type="hidden" name="teamID" value={modalTeam.id} />
+						<input type="hidden" name="teamID" value={selectedTeam.id} />
 					</form>
 				{/each}
-			</div>
+			{/if}
 		</div>
-	{/if}
+
+		<div class="p-2">
+			{#each data.playersWithoutTeams as player}
+				<form
+					method="POST"
+					action="?/addPlayerToTeam"
+					class="flex justify-between"
+					use:enhance
+					on:submit={() => {
+						selectedTeam.players.push(player);
+						selectedTeam = selectedTeam;
+					}}
+				>
+					<span>{player.firstName} {player.lastName}</span>
+					<button
+						disabled={playerList.length === 2}
+						class="hover:text-gray-50 disabled:text-gray-600"
+					>
+						<Plus />
+					</button>
+					<input type="hidden" name="playerID" value={player.id} />
+					<input type="hidden" name="teamID" value={selectedTeam.id} />
+				</form>
+			{/each}
+		</div>
+	</div>
 </Modal>

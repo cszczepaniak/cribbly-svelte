@@ -16,7 +16,11 @@ export const load: PageServerLoad = async () => {
             teamID: null,
         }
     })
-    return { teams, playersWithoutTeams };
+
+
+    let divisions = await prisma.division.findMany();
+
+    return { teams, playersWithoutTeams, divisions, };
 }
 
 
