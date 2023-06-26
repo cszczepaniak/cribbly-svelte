@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from "$app/stores";
 	import { signIn } from "@auth/sveltekit/client";
+	import { Button } from "flowbite-svelte";
 
 	const user = $page.data.session?.user;
 </script>
@@ -20,19 +21,19 @@
 		<h3>Welcome, {user?.name}</h3>
 		<div class="max-w-lg flex flex-col space-y-4 mt-6">
 			<a href="/admin/players">
-				<button class="button">Player Management</button>
+				<Button class="button">Player Management</Button>
 			</a>
 			<a href="/admin/teams">
-				<button class="button">Team Management</button>
+				<Button class="button">Team Management</Button>
 			</a>
 			<a href="/admin/divisions">
-				<button class="button">Division Management</button>
+				<Button class="button">Division Management</Button>
 			</a>
 			<a href="/admin/games">
-				<button class="button">Game Management</button>
+				<Button class="button">Game Management</Button>
 			</a>
 			<a href="/admin/tournament">
-				<button class="button">Tournament Management</button>
+				<Button class="button">Tournament Management</Button>
 			</a>
 		</div>
 	{/if}

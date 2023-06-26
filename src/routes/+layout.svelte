@@ -18,9 +18,7 @@
 
 <Navbar let:hidden let:toggle>
 	<NavBrand href="/">
-		<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-			Cribbly
-		</span>
+		<span class="self-center whitespace-nowrap text-xl font-semibold"> Cribbly </span>
 	</NavBrand>
 	<NavUl {hidden} class="text-">
 		<NavLi><a href="/">Home</a></NavLi>
@@ -42,9 +40,9 @@
 						<span class="block text-sm">{$page.data.session.user.name}</span>
 						<span class="block truncate text-sm font-medium">{$page.data.session.user.email}</span>
 					</DropdownHeader>
-					<DropdownItem>Dashboard</DropdownItem>
-					<DropdownItem>Settings</DropdownItem>
-					<DropdownItem>Earnings</DropdownItem>
+					<DropdownItem>
+						<a href="/admin">Admin</a>
+					</DropdownItem>
 					<DropdownDivider />
 					<DropdownItem on:click={signOut}>Sign out</DropdownItem>
 				</Dropdown>
