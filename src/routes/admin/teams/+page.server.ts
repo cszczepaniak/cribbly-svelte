@@ -7,6 +7,7 @@ export const load: PageServerLoad = async () => {
         select: {
             id: true,
             divisionID: true,
+            division: true,
             players: true,
         },
     });
@@ -22,7 +23,6 @@ export const load: PageServerLoad = async () => {
 
     return { teams, playersWithoutTeams, divisions, };
 }
-
 
 export const actions: Actions = {
     newTeam: async () => {
@@ -58,6 +58,37 @@ export const actions: Actions = {
                 },
             },
         });
+    },
+    removeTeamFromDivision: async (event) => {
+        const formData = await event.request.formData();
+        let id = String(formData.get("id"));
+
+        await prisma.team.update({
+            where: {
+                id,
+            },
+            data: {
+                division: {
+                    disconnect: true,
+                }
+            },
+        });
+    },
+    addTeamToDivision: async (event) => {
+        const formData = await event.request.formData();
+        let teamID = String(formData.get("teamID"));
+        let divisionID = String(formData.get("divisionID"));
+
+        await prisma.team.update({
+            where: { id: teamID },
+            data: {
+                division: {
+                    connect: {
+                        id: divisionID,
+                    }
+                }
+            }
+        })
     },
     addPlayerToTeam: async (event) => {
         const formData = await event.request.formData();
@@ -95,47 +126,4 @@ export const actions: Actions = {
             });
         } catch { }
     }
-}
-
-async function getFullTeams() {
-    type Player = {
-        id: string;
-        teamID: string;
-        firstName: string;
-        lastName: string;
-    };
-
-    type Team = {
-        id: string;
-        divisionID: string | null;
-        players: Player[];
-    };
-
-    type Result = { playerID: string } & Omit<Player, "id"> & Omit<Team, "players">;
-
-    const resToPlayer = (r: Result) => ({
-        id: r.playerID,
-        teamID: r.teamID,
-        firstName: r.firstName,
-        lastName: r.lastName,
-    });
-
-    const result = await prisma.$queryRaw<Result[]>`
-  SELECT t.id, t.divisionID, p.id AS playerID, p.firstName, p.lastName FROM Team t INNER JOIN Player p ON t.id = p.teamID
-    WHERE (SELECT COUNT(*) FROM Player WHERE teamID = t.id) = 2;
-  `;
-
-    const teams = result.reduce((prev, r) => {
-        let t = prev.get(r.id);
-        if (!t) {
-            t = { id: r.id, divisionID: r.divisionID, players: [] };
-        }
-
-        t.players = [...t.players, resToPlayer(r)];
-
-        prev.set(t.id, t);
-        return prev;
-    }, new Map<string, Team>());
-
-    return Array.from(teams.values());
 }

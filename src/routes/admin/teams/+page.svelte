@@ -29,10 +29,12 @@
 		}
 	}
 
-	let division = "No Division";
+	let division = "";
 	$: {
-		if (selectedTeam?.divisionID) {
-			division = selectedTeam.divisionID;
+		if (selectedTeam?.division) {
+			division = selectedTeam.division.name;
+		} else {
+			division = "";
 		}
 	}
 
@@ -103,7 +105,7 @@
 						<Edit />
 					</button>
 					<span>
-						{team.divisionID ? team.divisionID : "No Division"}
+						{team.division ? team.division.name : "No Division"}
 					</span>
 				</TableBodyCell>
 			</TableBodyRow>
@@ -113,17 +115,47 @@
 
 <Modal bind:open={showDivisionModal} class="py-4">
 	<div class="sticky top-0 bg-white dark:bg-gray-800 border-b-2 p-2 mt-4">
-		{division}
+		{division ? division : "No Division"}
+		{#if division}
+			<form
+				method="POST"
+				action="?/removeTeamFromDivision"
+				use:enhance={() => {
+					selectedTeam.division = null;
+					selectedTeam = selectedTeam;
+					return async ({ update }) => {
+						update();
+					};
+				}}
+			>
+				<input type="hidden" name="id" value={selectedTeam.id} />
+				<button>
+					<Minus />
+				</button>
+			</form>
+		{/if}
 	</div>
 
 	<div class="p-2">
-		{#each data.divisions as division}
-			<form method="POST" action="?/addTeamToDivision" class="flex justify-between" use:enhance>
-				<span>{division.name}</span>
+		{#each data.divisions as d}
+			<form
+				method="POST"
+				action="?/addTeamToDivision"
+				class="flex justify-between"
+				use:enhance={() => {
+					selectedTeam.division = d;
+					selectedTeam = selectedTeam;
+					return async ({ update }) => {
+						update();
+					};
+				}}
+			>
+				<span>{d.name}</span>
 				<button>
 					<Plus />
 				</button>
-				<input type="hidden" name="playerID" value={division.id} />
+				<input type="hidden" name="divisionID" value={d.id} />
+				<input type="hidden" name="teamID" value={selectedTeam.id} />
 			</form>
 		{/each}
 	</div>
@@ -140,10 +172,12 @@
 						method="POST"
 						action="?/removePlayerFromTeam"
 						class="flex justify-between"
-						use:enhance
-						on:submit={() => {
+						use:enhance={() => {
 							selectedTeam.players = selectedTeam.players.filter((p) => p.id !== player.id);
 							selectedTeam = selectedTeam;
+							return async ({ update }) => {
+								update();
+							};
 						}}
 					>
 						<p>{player?.firstName} {player?.lastName}</p>
@@ -163,10 +197,12 @@
 					method="POST"
 					action="?/addPlayerToTeam"
 					class="flex justify-between"
-					use:enhance
-					on:submit={() => {
+					use:enhance={() => {
 						selectedTeam.players.push(player);
 						selectedTeam = selectedTeam;
+						return async ({ update }) => {
+							update();
+						};
 					}}
 				>
 					<span>{player.firstName} {player.lastName}</span>
