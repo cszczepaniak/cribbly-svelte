@@ -70,7 +70,7 @@
 	<TableBody class="divide-y">
 		{#each data.teams as team}
 			<TableBodyRow>
-				<TableBodyCell class="flex items-center space-x-6">
+				<TableBodyCell>
 					<form method="POST" use:enhance action="?/removeTeam">
 						<input type="hidden" name="id" value={team.id} />
 						<button>
@@ -78,7 +78,7 @@
 						</button>
 					</form>
 				</TableBodyCell>
-				<TableBodyCell>
+				<TableBodyCell class="flex flex-row">
 					<button
 						class="mr-6"
 						type="button"
@@ -89,9 +89,15 @@
 					>
 						<Edit />
 					</button>
-					<span>
-						{getPlayers(team.players)}
-					</span>
+					{#if team.players.length === 0}
+						<p class="italic">No Players</p>
+					{:else}
+						<div class="flex flex-col">
+							{#each team.players as player}
+								<p>{player.firstName} {player.lastName}</p>
+							{/each}
+						</div>
+					{/if}
 				</TableBodyCell>
 				<TableBodyCell>
 					<button
