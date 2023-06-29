@@ -47,9 +47,9 @@
 					<DropdownItem on:click={signOut}>Sign out</DropdownItem>
 				</Dropdown>
 			{/if}
-			<NavHamburger on:click={toggle} />
-		</div></NavUl
-	>
+		</div>
+	</NavUl>
+	<NavHamburger on:click={toggle} />
 </Navbar>
 
 <slot />
