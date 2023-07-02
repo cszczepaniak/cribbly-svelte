@@ -120,8 +120,10 @@
 </Table>
 
 <Modal bind:open={showDivisionModal} class="py-4">
-	<div class="sticky top-0 bg-white dark:bg-gray-800 border-b-2 p-2 mt-4">
-		{division ? division : "No Division"}
+	<div class="flex justify-between sticky top-0 bg-white dark:bg-gray-800 border-b-2 p-2 mt-4">
+		<div>
+			{division ? division : "No Division"}
+		</div>
 		{#if division}
 			<form
 				method="POST"
