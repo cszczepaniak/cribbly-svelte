@@ -2,6 +2,7 @@
 	import { enhance } from "$app/forms";
 	import { page } from "$app/stores";
 	import {
+		Button,
 		Table,
 		TableBody,
 		TableBodyCell,
@@ -19,9 +20,9 @@
 	}
 </script>
 
-<h1>Games</h1>
-<form method="POST" action="?/createPrelims" use:enhance>
-	<button>Create Prelims</button>
+<h1 class="text-3xl mb-4">Games</h1>
+<form method="POST" action="?/createPrelims" use:enhance class="my-4">
+	<Button>Create Prelims</Button>
 </form>
 
 {#if invalidDivisions?.length > 0}
