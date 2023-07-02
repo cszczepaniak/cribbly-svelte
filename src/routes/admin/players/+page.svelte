@@ -52,7 +52,7 @@
 	<TableHead>
 		<TableHeadCell>Player Name</TableHeadCell>
 	</TableHead>
-	<TableBody class="divide-y">
+	<TableBody>
 		{#each data.players as player}
 			<TableBodyRow>
 				<TableBodyCell class="flex items-center">

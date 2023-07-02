@@ -67,7 +67,7 @@
 		<TableHeadCell>Players</TableHeadCell>
 		<TableHeadCell>Division</TableHeadCell>
 	</TableHead>
-	<TableBody class="divide-y">
+	<TableBody>
 		{#each data.teams as team}
 			<TableBodyRow>
 				<TableBodyCell>

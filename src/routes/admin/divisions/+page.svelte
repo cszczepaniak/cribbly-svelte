@@ -37,7 +37,7 @@
 		<TableHeadCell />
 		<TableHeadCell>Name</TableHeadCell>
 	</TableHead>
-	<TableBody class="divide-y">
+	<TableBody>
 		{#each data.divisions as division}
 			<TableBodyRow>
 				<TableBodyCell class="flex items-center space-x-6">
