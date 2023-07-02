@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from "$app/stores";
+	import { Button } from "flowbite-svelte";
 </script>
 
 <head>
@@ -15,4 +15,9 @@
 	<h2 class="text-3xl sm:text-4xl py-4 text-center">
 		2023 Szczepaniak Charity Cribbage Tournament
 	</h2>
+	<div>
+		<a href="/divisions">
+			<Button class="text-xl">Report a Prelim Score</Button>
+		</a>
+	</div>
 </div>

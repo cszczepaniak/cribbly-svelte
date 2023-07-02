@@ -7,10 +7,8 @@ export const getTeamName = (players: Player[] | undefined) => {
 	if (players === undefined) {
 		return "<undefined>";
 	}
-	if (players[0] && !players[1]) {
-		return `Team ${players[0]?.lastName}`;
-	} else if (players[0] && players[1]) {
-		return `Team ${players[0]?.lastName}/${players[1]?.lastName}`;
+	if (players.length > 0) {
+		return players.map(p => `${p.firstName} ${p.lastName}`).join(", ")
 	}
-	return "New Team";
+	return "No Players";
 };

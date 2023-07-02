@@ -80,7 +80,6 @@ export const actions: Actions = {
         }
 
         const games = generatePrelimGames(divs);
-        console.log(games.size);
 
         await prisma.game.createMany({
             data: Array.from(games.entries()).flatMap(([divID, pairs]) =>
