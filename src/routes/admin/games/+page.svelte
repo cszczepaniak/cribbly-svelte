@@ -1,6 +1,14 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
 	import { page } from "$app/stores";
+	import {
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		TableHead,
+		TableHeadCell,
+	} from "flowbite-svelte";
 	import type { PageData } from "./$types";
 
 	export let data: PageData;
@@ -25,10 +33,25 @@
 	</ul>
 {/if}
 
-{#each data.games as game}
-	<div>
-		{game.teams
-			.map((team) => team?.players.map((p) => `${p.firstName} ${p.lastName}`).join(", "))
-			.join(" VS ")}
-	</div>
-{/each}
+<Table>
+	<TableHead>
+		<TableHeadCell>Team 1</TableHeadCell>
+		<TableHeadCell>Team 2</TableHeadCell>
+		<TableHeadCell>Division</TableHeadCell>
+	</TableHead>
+	<TableBody>
+		{#each data.games as game}
+			<TableBodyRow>
+				<TableBodyCell>
+					{game.teams[0]?.players.map((p) => `${p.firstName} ${p.lastName}`).join(", ")}
+				</TableBodyCell>
+				<TableBodyCell>
+					{game.teams[1]?.players.map((p) => `${p.firstName} ${p.lastName}`).join(", ")}
+				</TableBodyCell>
+				<TableBodyCell>
+					{game.division.name}
+				</TableBodyCell>
+			</TableBodyRow>
+		{/each}
+	</TableBody>
+</Table>
