@@ -15,9 +15,12 @@
 	<h2 class="text-3xl sm:text-4xl py-4 text-center">
 		2023 Szczepaniak Charity Cribbage Tournament
 	</h2>
-	<div>
+	<div class="flex flex-col space-y-4">
 		<a href="/divisions">
-			<Button class="text-xl">Report a Prelim Score</Button>
+			<Button class="text-xl w-full">Report a Prelim Score</Button>
+		</a>
+		<a href="/standings">
+			<Button class="text-xl w-full">View Prelim Standings</Button>
 		</a>
 	</div>
 </div>
