@@ -11,9 +11,9 @@
 {#if data?.divisions}
 	<ul class="space-y-4">
 		{#each data.divisions as division}
-			<li>
+			<li class="max-w-md">
 				<a href={`/division/${division.id}`}>
-					<Button class="text-lg">{division.name}</Button>
+					<Button class="text-lg w-full">{division.name}</Button>
 				</a>
 			</li>
 		{/each}
