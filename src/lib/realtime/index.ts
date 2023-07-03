@@ -1,3 +1,4 @@
+import { browser } from "$app/environment";
 import { env } from "$env/dynamic/public";
 import { RealtimeChannel, createClient } from "@supabase/supabase-js";
 import { onMount } from "svelte";
@@ -7,7 +8,7 @@ const supabaseKey = env.PUBLIC_SUPABASE_ANON_KEY;
 
 type SubscriptionParams = {
     eventFilter: GameUpdateEvent,
-    callback: (payload: GameUpdateEvent) => void,
+    callback: (payload: GameUpdatePayload) => void,
 }
 
 export function subscribeToGameUpdates(params?: SubscriptionParams) {
@@ -47,9 +48,13 @@ function subscribeToChannel(c: Channel) {
     const supabase = createClient(supabaseUrl, supabaseKey);
     const client = supabase.channel(c);
 
-    onMount(() => {
+    if (browser) {
+        onMount(() => {
+            client.subscribe();
+        })
+    } else {
         client.subscribe();
-    })
+    }
 
     return client
 }
