@@ -22,7 +22,7 @@
 
 <h1 class="text-3xl mb-4">Games</h1>
 <form method="POST" action="?/createPrelims" use:enhance class="my-4">
-	<Button>Create Prelims</Button>
+	<Button type="submit">Create Prelims</Button>
 </form>
 
 {#if invalidDivisions?.length > 0}
