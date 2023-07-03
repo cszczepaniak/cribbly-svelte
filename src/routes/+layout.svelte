@@ -52,6 +52,6 @@
 	<NavHamburger on:click={toggle} />
 </Navbar>
 
-<main class="mx-auto container py-4">
+<main class="mx-auto container">
 	<slot />
 </main>

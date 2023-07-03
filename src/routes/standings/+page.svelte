@@ -7,6 +7,12 @@
 
 	export let data: PageData;
 
+	let width = 0;
+	let smallLayout = false;
+	$: {
+		smallLayout = width < 1024;
+	}
+
 	const hasNoGames = (t: (typeof teamsWithStats)[number]) => t.losses + t.wins + t.totalScore === 0;
 
 	let teams = data.teams;
@@ -101,31 +107,41 @@
 	}
 </script>
 
-<h1 class="text-3xl mb-4">Prelim Standings</h1>
+<svelte:window bind:innerWidth={width} />
 
-<Table>
-	<TableHead>
-		<TableHeadCell>Team</TableHeadCell>
-		<TableHeadCell>Division</TableHeadCell>
-		<TableHeadCell>Wins</TableHeadCell>
-		<TableHeadCell>Losses</TableHeadCell>
-		<TableHeadCell>Total Score</TableHeadCell>
-	</TableHead>
-	<TableBody>
-		{#each sortedTeams as team (team.id)}
-			<!-- We're using tr directly here with the styles copied from flowbite -- this is the only way to use animate:flip -->
-			<tr
-				class={`border-b last:border-b-0 ${
-					team.inTournament ? "bg-green-700" : "bg-white dark:bg-gray-800"
-				} dark:border-gray-700`}
-				animate:flip
-			>
-				<TableBodyCell>{getTeamName(team.players)}</TableBodyCell>
-				<TableBodyCell>{team.division?.name ?? "No Division"}</TableBodyCell>
-				<TableBodyCell>{team.wins}</TableBodyCell>
-				<TableBodyCell>{team.losses}</TableBodyCell>
-				<TableBodyCell>{team.totalScore}</TableBodyCell>
-			</tr>
-		{/each}
-	</TableBody>
-</Table>
+<h1 class="text-3xl mb-4 p-4">Prelim Standings</h1>
+
+<div>
+	<Table>
+		<TableHead>
+			<TableHeadCell>Rank</TableHeadCell>
+			<TableHeadCell>Team</TableHeadCell>
+			{#if !smallLayout}
+				<TableHeadCell>Division</TableHeadCell>
+				<TableHeadCell>Wins</TableHeadCell>
+				<TableHeadCell>Losses</TableHeadCell>
+				<TableHeadCell>Total Score</TableHeadCell>
+			{/if}
+		</TableHead>
+		<TableBody>
+			{#each sortedTeams as team, i (team.id)}
+				<!-- We're using tr directly here with the styles copied from flowbite -- this is the only way to use animate:flip -->
+				<tr
+					class={`border-b last:border-b-0 ${
+						team.inTournament ? "bg-green-700" : "bg-white dark:bg-gray-800"
+					} dark:border-gray-700`}
+					animate:flip
+				>
+					<TableBodyCell>{i + 1}</TableBodyCell>
+					<TableBodyCell>{getTeamName(team.players)}</TableBodyCell>
+					{#if !smallLayout}
+						<TableBodyCell>{team.division?.name ?? "No Division"}</TableBodyCell>
+						<TableBodyCell>{team.wins}</TableBodyCell>
+						<TableBodyCell>{team.losses}</TableBodyCell>
+						<TableBodyCell>{team.totalScore}</TableBodyCell>
+					{/if}
+				</tr>
+			{/each}
+		</TableBody>
+	</Table>
+</div>

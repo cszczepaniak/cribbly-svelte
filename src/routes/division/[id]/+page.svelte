@@ -32,17 +32,17 @@
 </script>
 
 {#if data?.games}
-	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+	<div class="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 		{#each data.games as game (game.id)}
 			{#if game.winner}
-				<Card>
+				<Card size="lg">
 					<div>{teamName(game?.team1, game)}</div>
 					<span>VS</span>
 					<div>{teamName(game?.team2, game)}</div>
 				</Card>
 			{:else}
 				<a href={`/game/${game.id}?fromDivision=${$page.params.id}`} class="hover:cursor-auto">
-					<Card class="hover:cursor-pointer hover:dark:bg-gray-700">
+					<Card size="lg" class="hover:cursor-pointer hover:dark:bg-gray-700">
 						<div>{teamName(game?.team1, game)}</div>
 						<span>VS</span>
 						<div>{teamName(game?.team2, game)}</div>
