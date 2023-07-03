@@ -37,7 +37,7 @@ export const adminRouter = router({
 					email: true,
 				},
 			});
-			console.log(admin);
+
 			if (!admin) {
 				return { isAdmin: false };
 			}

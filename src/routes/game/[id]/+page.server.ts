@@ -45,8 +45,6 @@ const client = subscribeToGameUpdates();
 
 export const actions: Actions = {
     default: async (event) => {
-        console.log("handling game update submission...")
-
         const formData = await event.request.formData();
         const schema = zfd.formData(scoreSchema)
 
@@ -66,13 +64,11 @@ export const actions: Actions = {
             }
         })
 
-        console.log("notifying of game update...")
         client.notifyGameUpdate({
             gameID: result.data.gameID,
             winnerID: result.data.teamID,
             loserScore: result.data.loserScore,
         });
-        console.log("notifying of game update...done!")
 
         let redirectTo = event.url.searchParams.get("fromDivision");
         if (redirectTo) {

@@ -28,18 +28,7 @@
 
 <h1 class="text-3xl mb-4">Report Prelim Score</h1>
 
-<form
-	method="POST"
-	class="space-y-4"
-	use:enhance={() => {
-		console.log("submitting form...");
-		return async ({ update }) => {
-			console.log("running update...");
-			update();
-			console.log("running update...done!");
-		};
-	}}
->
+<form method="POST" class="space-y-4" use:enhance>
 	<input type="hidden" value={data?.game?.id} name="gameID" />
 	<Label class="text-xl">
 		Who won?
