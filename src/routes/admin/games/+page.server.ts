@@ -93,4 +93,11 @@ export const actions: Actions = {
             skipDuplicates: true,
         });
     },
+    deleteAllGames: async () => {
+        await prisma.game.deleteMany({
+            where: {
+                kind: gameKindPrelim,
+            }
+        });
+    }
 }

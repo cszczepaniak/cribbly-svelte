@@ -22,6 +22,7 @@
 	subscribeToGameUpdates({
 		eventFilter: "score-submitted",
 		callback: (game) => {
+			console.log("received game update", game);
 			const gameIdx = games.findIndex((g) => g.id === game.gameID);
 			if (gameIdx < 0 || gameIdx >= games.length) {
 				return;

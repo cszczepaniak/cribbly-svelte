@@ -48,12 +48,16 @@ function subscribeToChannel(c: Channel) {
     const supabase = createClient(supabaseUrl, supabaseKey);
     const client = supabase.channel(c);
 
-    if (browser) {
-        onMount(() => {
+    try {
+        if (browser) {
+            onMount(() => {
+                client.subscribe();
+            })
+        } else {
             client.subscribe();
-        })
-    } else {
-        client.subscribe();
+        }
+    } catch (e) {
+        console.log("failed to subscribe", e, browser)
     }
 
     return client
