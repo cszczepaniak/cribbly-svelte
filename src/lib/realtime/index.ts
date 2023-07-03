@@ -35,11 +35,15 @@ type GameUpdatePayload = {
 
 export function notifyGameUpdate(cl: RealtimeChannel, g: GameUpdatePayload) {
     let ev: GameUpdateEvent = "score-submitted";
-    cl.send({
-        type: "broadcast",
-        event: ev,
-        payload: g,
-    })
+    try {
+        cl.send({
+            type: "broadcast",
+            event: ev,
+            payload: g,
+        })
+    } catch (e) {
+        console.error("failed to send notification", e)
+    }
 }
 
 type Channel = "prelim-standings";
@@ -57,7 +61,7 @@ function subscribeToChannel(c: Channel) {
             client.subscribe();
         }
     } catch (e) {
-        console.log("failed to subscribe", e, browser)
+        console.error("failed to subscribe", e, browser)
     }
 
     return client

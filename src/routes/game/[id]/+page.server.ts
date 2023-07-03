@@ -43,6 +43,8 @@ const scoreSchema = zfd.formData({
 
 export const actions: Actions = {
     default: async (event) => {
+        console.log("handling game update submission...")
+
         const formData = await event.request.formData();
         const schema = zfd.formData(scoreSchema)
 
