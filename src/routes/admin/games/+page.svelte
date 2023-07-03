@@ -41,7 +41,7 @@
 		<TableHeadCell>Division</TableHeadCell>
 	</TableHead>
 	<TableBody>
-		{#each data.games as game}
+		{#each data.games as game (game.id)}
 			<TableBodyRow>
 				<TableBodyCell>
 					{game.teams[0]?.players.map((p) => `${p.firstName} ${p.lastName}`).join(", ")}

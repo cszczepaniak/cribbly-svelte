@@ -10,7 +10,7 @@
 
 {#if data?.divisions}
 	<ul class="space-y-4">
-		{#each data.divisions as division}
+		{#each data.divisions as division (division.id)}
 			<li class="max-w-md">
 				<a href={`/division/${division.id}`}>
 					<Button class="text-lg w-full">{division.name}</Button>

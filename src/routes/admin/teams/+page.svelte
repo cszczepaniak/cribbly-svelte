@@ -68,7 +68,7 @@
 		<TableHeadCell>Division</TableHeadCell>
 	</TableHead>
 	<TableBody>
-		{#each data.teams as team}
+		{#each data.teams as team (team.id)}
 			<TableBodyRow>
 				<TableBodyCell>
 					<form method="POST" use:enhance action="?/removeTeam">
@@ -93,7 +93,7 @@
 						<p class="italic">No Players</p>
 					{:else}
 						<div class="flex flex-col">
-							{#each team.players as player}
+							{#each team.players as player (player.id)}
 								<p>{player.firstName} {player.lastName}</p>
 							{/each}
 						</div>
@@ -145,7 +145,7 @@
 	</div>
 
 	<div class="p-2">
-		{#each data.divisions as d}
+		{#each data.divisions as d (d.id)}
 			<form
 				method="POST"
 				action="?/addTeamToDivision"
@@ -175,7 +175,7 @@
 			{#if playerList.length == 0}
 				<p>No players!</p>
 			{:else}
-				{#each playerList as player}
+				{#each playerList as player (player.id)}
 					<form
 						method="POST"
 						action="?/removePlayerFromTeam"
@@ -200,7 +200,7 @@
 		</div>
 
 		<div class="p-2">
-			{#each data.playersWithoutTeams as player}
+			{#each data.playersWithoutTeams as player (player.id)}
 				<form
 					method="POST"
 					action="?/addPlayerToTeam"

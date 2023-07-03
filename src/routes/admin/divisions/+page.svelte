@@ -38,7 +38,7 @@
 		<TableHeadCell>Name</TableHeadCell>
 	</TableHead>
 	<TableBody>
-		{#each data.divisions as division}
+		{#each data.divisions as division (division.id)}
 			<TableBodyRow>
 				<TableBodyCell class="flex items-center space-x-6">
 					<form method="POST" use:enhance action="?/removeDivision">

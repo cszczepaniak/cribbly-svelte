@@ -53,7 +53,7 @@
 		<TableHeadCell>Player Name</TableHeadCell>
 	</TableHead>
 	<TableBody>
-		{#each data.players as player}
+		{#each data.players as player (player.id)}
 			<TableBodyRow>
 				<TableBodyCell class="flex items-center">
 					<form method="POST" use:enhance action="?/removePlayer" class="mr-6">

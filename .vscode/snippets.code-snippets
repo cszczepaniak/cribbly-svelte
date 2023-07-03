@@ -31,8 +31,8 @@
 		"scope": "svelte",
 		"prefix": "each",
 		"body": [
-			"{#each $1 as $2}",
-			"$3",
+			"{#each $1 as $2 ($3)}",
+			"$4",
 			"{/each}"
 		]
 	},

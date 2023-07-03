@@ -33,7 +33,7 @@
 
 {#if data?.games}
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-		{#each data.games as game}
+		{#each data.games as game (game.id)}
 			{#if game.winner}
 				<Card>
 					<div>{teamName(game?.team1, game)}</div>
