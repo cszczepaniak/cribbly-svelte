@@ -41,6 +41,8 @@ const scoreSchema = zfd.formData({
     loserScore: zfd.numeric(z.number().min(0).max(120)),
 });
 
+const client = subscribeToGameUpdates();
+
 export const actions: Actions = {
     default: async (event) => {
         console.log("handling game update submission...")
@@ -65,7 +67,7 @@ export const actions: Actions = {
         })
 
         console.log("notifying of game update...")
-        subscribeToGameUpdates().notifyGameUpdate({
+        client.notifyGameUpdate({
             gameID: result.data.gameID,
             winnerID: result.data.teamID,
             loserScore: result.data.loserScore,
