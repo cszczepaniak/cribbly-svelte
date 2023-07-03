@@ -18,20 +18,9 @@ export const load: PageServerLoad = async () => {
         },
     })
 
-    const completedGames = games.filter(g => g.loserScore !== null && g.winner !== null);
-
     return {
-        teams: teams.map(t => ({
-            ...t,
-            wins: completedGames.filter(g => g.winner === t.id).length,
-            losses: completedGames.filter(g => (g.team1ID === t.id || g.team2ID === t.id) && g.winner !== t.id).length,
-            totalScore: completedGames.filter(g => g.team1ID === t.id || g.team2ID === t.id).reduce((score, g) => {
-                if (g.winner === t.id) {
-                    return score + 121
-                }
-                return score + (g.loserScore ?? 0)
-            }, 0)
-        })),
+        teams,
+        games,
     };
 };
 

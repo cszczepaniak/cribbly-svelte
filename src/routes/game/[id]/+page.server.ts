@@ -3,6 +3,7 @@ import { fail, type Actions, redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import { zfd } from "zod-form-data";
 import { z } from "zod";
+import { subscribeToGameUpdates } from "$lib/realtime";
 
 export const load: PageServerLoad = async ({ params }) => {
     let game = await prisma.game.findUnique({
@@ -60,6 +61,13 @@ export const actions: Actions = {
                 loserScore: result.data.loserScore,
             }
         })
+
+        const client = subscribeToGameUpdates();
+        client.notifyGameUpdate({
+            gameID: result.data.gameID,
+            winnerID: result.data.teamID,
+            loserScore: result.data.loserScore,
+        });
 
         let redirectTo = event.url.searchParams.get("fromDivision");
         if (redirectTo) {
