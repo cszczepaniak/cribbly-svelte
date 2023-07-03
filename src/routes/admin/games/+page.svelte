@@ -25,6 +25,10 @@
 	<Button type="submit">Create Prelims</Button>
 </form>
 
+<form method="POST" action="?/deleteAllGames" use:enhance class="my-4">
+	<Button type="submit" color="red">DELETE ALL</Button>
+</form>
+
 {#if invalidDivisions?.length > 0}
 	<p>The following divisions were invalid:</p>
 	<ul>

@@ -62,12 +62,13 @@ export const actions: Actions = {
             }
         })
 
-        const client = subscribeToGameUpdates();
-        client.notifyGameUpdate({
+        console.log("notifying of game update...")
+        subscribeToGameUpdates().notifyGameUpdate({
             gameID: result.data.gameID,
             winnerID: result.data.teamID,
             loserScore: result.data.loserScore,
         });
+        console.log("notifying of game update...done!")
 
         let redirectTo = event.url.searchParams.get("fromDivision");
         if (redirectTo) {
