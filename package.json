@@ -16,6 +16,9 @@
 		"format": "prettier --plugin-search-dir . --write .",
 		"postinstall": "prisma generate"
 	},
+	"pre-commit": [
+		"format"
+	],
 	"devDependencies": {
 		"@faker-js/faker": "^8.0.2",
 		"@sveltejs/adapter-auto": "^2.0.0",
@@ -27,6 +30,7 @@
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte": "^2.26.0",
 		"postcss": "^8.4.24",
+		"pre-commit": "^1.2.2",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.8.1",
 		"prisma": "^4.15.0",
