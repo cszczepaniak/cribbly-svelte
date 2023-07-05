@@ -27,8 +27,8 @@
 
 	subscribeToGameUpdates({
 		eventFilter: "score-submitted",
-		callback: (game) => {
-			const gameIdx = games.findIndex((g) => g.id === game.gameID);
+		callback: game => {
+			const gameIdx = games.findIndex(g => g.id === game.gameID);
 			if (gameIdx < 0 || gameIdx >= games.length) {
 				return;
 			}
@@ -41,7 +41,7 @@
 
 	let completedGames: typeof data.games = [];
 	$: {
-		completedGames = games.filter((g) => g.loserScore !== null && g.winner !== null);
+		completedGames = games.filter(g => g.loserScore !== null && g.winner !== null);
 	}
 
 	let teamsWithStats: ((typeof data.teams)[number] & {
@@ -50,14 +50,14 @@
 		totalScore: number;
 	})[] = [];
 	$: {
-		teamsWithStats = teams.map((t, i) => ({
+		teamsWithStats = teams.map(t => ({
 			...t,
-			wins: completedGames.filter((g) => g.winner === t.id).length,
+			wins: completedGames.filter(g => g.winner === t.id).length,
 			losses: completedGames.filter(
-				(g) => (g.team1ID === t.id || g.team2ID === t.id) && g.winner !== t.id,
+				g => (g.team1ID === t.id || g.team2ID === t.id) && g.winner !== t.id,
 			).length,
 			totalScore: completedGames
-				.filter((g) => g.team1ID === t.id || g.team2ID === t.id)
+				.filter(g => g.team1ID === t.id || g.team2ID === t.id)
 				.reduce((score, g) => {
 					if (g.winner === t.id) {
 						return score + 121;

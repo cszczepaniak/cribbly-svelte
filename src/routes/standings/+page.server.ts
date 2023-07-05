@@ -4,24 +4,24 @@ import type { PageServerLoad } from "./$types";
 import { gameKindPrelim } from "$lib/server/utils/games";
 
 export const load: PageServerLoad = async () => {
-    const teams = await prisma.team.findMany({
-        select: {
-            id: true,
-            division: true,
-            players: true,
-        }
-    });
+	const teams = await prisma.team.findMany({
+		select: {
+			id: true,
+			division: true,
+			players: true,
+		},
+	});
 
-    const games = await prisma.game.findMany({
-        where: {
-            kind: gameKindPrelim,
-        },
-    })
+	const games = await prisma.game.findMany({
+		where: {
+			kind: gameKindPrelim,
+		},
+	});
 
-    return {
-        teams,
-        games,
-    };
+	return {
+		teams,
+		games,
+	};
 };
 
-export const actions: Actions = {}
+export const actions: Actions = {};

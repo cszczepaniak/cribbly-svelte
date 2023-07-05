@@ -48,10 +48,10 @@
 		{#each data.games as game (game.id)}
 			<TableBodyRow>
 				<TableBodyCell>
-					{game.teams[0]?.players.map((p) => `${p.firstName} ${p.lastName}`).join(", ")}
+					{game.teams[0]?.players.map(p => `${p.firstName} ${p.lastName}`).join(", ")}
 				</TableBodyCell>
 				<TableBodyCell>
-					{game.teams[1]?.players.map((p) => `${p.firstName} ${p.lastName}`).join(", ")}
+					{game.teams[1]?.players.map(p => `${p.firstName} ${p.lastName}`).join(", ")}
 				</TableBodyCell>
 				<TableBodyCell>
 					{game.division.name}

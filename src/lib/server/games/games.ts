@@ -1,6 +1,6 @@
 export function generatePrelimGames(divisions: { id: string; teams: { id: string }[] }[]) {
 	return divisions.reduce((prev, div) => {
-		const games = generateGames(div.teams.map((t) => t.id));
+		const games = generateGames(div.teams.map(t => t.id));
 		prev.set(div.id, games);
 		return prev;
 	}, new Map<string, [string, string][]>());

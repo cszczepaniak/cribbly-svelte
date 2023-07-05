@@ -8,7 +8,7 @@ export const getTeamName = (players: Player[] | undefined) => {
 		return "<undefined>";
 	}
 	if (players.length > 0) {
-		return players.map(p => `${p.firstName} ${p.lastName}`).join(", ")
+		return players.map(p => `${p.firstName} ${p.lastName}`).join(", ");
 	}
 	return "No Players";
 };

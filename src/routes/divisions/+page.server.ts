@@ -1,10 +1,10 @@
-import { prisma } from '$lib/server/db/client';
-import type { PageServerLoad } from './$types';
+import { prisma } from "$lib/server/db/client";
+import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async () => {
-    const divisions = await prisma.division.findMany();
+	const divisions = await prisma.division.findMany();
 
-    return {
-        divisions
-    };
+	return {
+		divisions,
+	};
 };

@@ -4,11 +4,10 @@ import type { LayoutServerLoad } from "./$types";
 export const load: LayoutServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();
 
-	let mergeSession = (isAdmin: boolean) => ({ session, isAdmin })
-
+	let mergeSession = (isAdmin: boolean) => ({ session, isAdmin });
 
 	if (!session?.user?.email) {
-		return mergeSession(false)
+		return mergeSession(false);
 	}
 	const admin = await prisma.admin.findUnique({
 		where: {
@@ -19,5 +18,5 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 		},
 	});
 
-	return mergeSession(!!admin)
+	return mergeSession(!!admin);
 };

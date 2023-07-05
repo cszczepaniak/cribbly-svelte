@@ -8,7 +8,7 @@
 
 	subscribeToGameUpdates({
 		eventFilter: "score-submitted",
-		callback: (update) => {
+		callback: update => {
 			events = [...events, update];
 		},
 	});

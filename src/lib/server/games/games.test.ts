@@ -4,17 +4,17 @@ test("generate prelims", () => {
 	const prelims = generatePrelimGames([
 		{
 			id: "div1",
-			teams: ["d1t1", "d1t2", "d1t3", "d1t4"].map((id) => ({ id })),
+			teams: ["d1t1", "d1t2", "d1t3", "d1t4"].map(id => ({ id })),
 		},
 		{
 			id: "div2",
-			teams: ["d2t1", "d2t2", "d2t3", "d2t4", "d2t5", "d2t6"].map((id) => ({
+			teams: ["d2t1", "d2t2", "d2t3", "d2t4", "d2t5", "d2t6"].map(id => ({
 				id,
 			})),
 		},
 		{
 			id: "div3",
-			teams: ["d3t1", "d3t2", "d3t3", "d3t4"].map((id) => ({
+			teams: ["d3t1", "d3t2", "d3t3", "d3t4"].map(id => ({
 				id,
 			})),
 		},
@@ -29,7 +29,7 @@ test("generate prelims", () => {
 		}
 		expect(input).toHaveLength(expNum);
 
-		const pairSet = new Set(input.map((pair) => pair.sort().join(",")));
+		const pairSet = new Set(input.map(pair => pair.sort().join(",")));
 		expect(pairSet.size).toEqual(input.length);
 	};
 

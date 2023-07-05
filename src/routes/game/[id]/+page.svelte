@@ -10,7 +10,7 @@
 
 	let selectOptions: SelectOptionType[] = [];
 	$: {
-		selectOptions = [data.game?.team1, data.game?.team2].map((t) => ({
+		selectOptions = [data.game?.team1, data.game?.team2].map(t => ({
 			value: t.id,
 			name: getTeamName(t.players),
 		}));

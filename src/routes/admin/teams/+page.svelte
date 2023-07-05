@@ -42,7 +42,7 @@
 		if (!players || players.length === 0) {
 			return "No Players";
 		}
-		return players.map((p) => `${p.firstName} ${p.lastName}`).join(", ");
+		return players.map(p => `${p.firstName} ${p.lastName}`).join(", ");
 	};
 </script>
 
@@ -181,7 +181,7 @@
 						action="?/removePlayerFromTeam"
 						class="flex justify-between"
 						use:enhance={() => {
-							selectedTeam.players = selectedTeam.players.filter((p) => p.id !== player.id);
+							selectedTeam.players = selectedTeam.players.filter(p => p.id !== player.id);
 							selectedTeam = selectedTeam;
 							return async ({ update }) => {
 								update();
