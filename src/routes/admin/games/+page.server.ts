@@ -2,7 +2,7 @@ import { fail, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import { prisma } from "$lib/server/db/client";
 import { generatePrelimGames } from "$lib/server/games/games";
-import { gameKindPrelim } from "$lib/server/utils/games";
+import { gameKindPrelim } from "$lib/utils/games";
 
 const getPrelimGames = async () => {
 	const games = await prisma.game.findMany({

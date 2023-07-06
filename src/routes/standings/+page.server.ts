@@ -1,7 +1,7 @@
 import { prisma } from "$lib/server/db/client";
 import type { Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
-import { gameKindPrelim } from "$lib/server/utils/games";
+import { gameKindPrelim } from "$lib/utils/games";
 
 export const load: PageServerLoad = async () => {
 	const teams = await prisma.team.findMany({
