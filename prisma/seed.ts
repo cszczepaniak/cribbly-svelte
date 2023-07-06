@@ -11,7 +11,7 @@ const prisma = new PrismaClient({
 });
 
 async function seedPlayers() {
-	for (let i = 0; i < 20; i++) {
+	for (let i = 0; i < 128; i++) {
 		await prisma.player.create({
 			data: {
 				firstName: faker.person.firstName(),
