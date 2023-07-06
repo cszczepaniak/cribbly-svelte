@@ -40,7 +40,7 @@
 </script>
 
 <div class="flex">
-	<h1 class="text-3xl mb-4 mr-4">Teams</h1>
+	<h1 class="text-3xl mb-4 mr-4">Teams {`(${data.teams.length} total)`}</h1>
 
 	<form method="POST" action="?/newTeam" use:enhance>
 		<button>
@@ -142,7 +142,7 @@
 			<form
 				method="POST"
 				action="?/addTeamToDivision"
-				class="flex justify-between"
+				class="flex items-center justify-between hover:bg-gray-700 rounded px-2 py-1"
 				use:enhance={() => {
 					selectedTeam.division = d;
 					selectedTeam = selectedTeam;
