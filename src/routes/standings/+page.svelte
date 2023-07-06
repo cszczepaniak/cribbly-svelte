@@ -68,7 +68,7 @@
 	}
 
 	const tournamentCutoff = 2;
-	let sortedTeams: typeof teamsWithStats = [];
+	let sortedTeams: ((typeof teamsWithStats)[number] & { inTournament: boolean })[] = [];
 	$: {
 		sortedTeams = teamsWithStats
 			.sort((a, b) => {
