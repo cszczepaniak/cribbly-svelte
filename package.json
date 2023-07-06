@@ -14,10 +14,11 @@
 		"test:unit": "vitest",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
+		"format-pre-commit": "prettier --plugin-search-dir . --write . && git add .",
 		"postinstall": "prisma generate"
 	},
 	"pre-commit": [
-		"format"
+		"format-pre-commit"
 	],
 	"devDependencies": {
 		"@faker-js/faker": "^8.0.2",
