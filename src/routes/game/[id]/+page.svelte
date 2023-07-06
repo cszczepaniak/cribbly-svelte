@@ -20,22 +20,22 @@
 	let teamID = data.game.winner;
 	let loserScore = data.game.loserScore;
 
-	let alreadyComplete = false
+	let alreadyComplete = false;
 	$: {
 		alreadyComplete = data.game.complete || !!form?.updateError;
 	}
 
 	subscribeToGameUpdates({
 		eventFilter: "score-submitted",
-		callback: (update) => {
+		callback: update => {
 			if (update.gameID !== data.game.id) {
-				return
+				return;
 			}
 			alreadyComplete = true;
 			teamID = update.winnerID;
 			loserScore = update.loserScore;
-		}
-	})
+		},
+	});
 
 	let canSubmit = false;
 	$: {
@@ -83,7 +83,9 @@
 		</Helper>
 	{/if}
 	{#if form?.updateError}
-		<span class="text-red-500 text-lg">Game already finished. Another person may have already reported the result of this game.</span>
+		<span class="text-red-500 text-lg"
+			>Game already finished. Another person may have already reported the result of this game.</span
+		>
 	{/if}
 	{#if !alreadyComplete}
 		<Button class="text-xl" type="submit" disabled={!canSubmit}>Submit Result</Button>

@@ -68,7 +68,7 @@ export const actions: Actions = {
 		if (updateResult.count === 0) {
 			return fail(400, {
 				updateError: true,
-			})
+			});
 		}
 
 		client.notifyGameUpdate({
