@@ -67,7 +67,7 @@
 		}));
 	}
 
-	const tournamentCutoff = 2;
+	const tournamentCutoff = 32;
 	let sortedTeams: ((typeof teamsWithStats)[number] & { inTournament: boolean })[] = [];
 	$: {
 		sortedTeams = teamsWithStats
@@ -103,7 +103,7 @@
 
 				return 0;
 			})
-			.map((t, i) => ({ ...t, inTournament: i < tournamentCutoff }));
+			.map((t, i) => ({ ...t, inTournament: i < tournamentCutoff && !hasNoGames(t) }));
 	}
 </script>
 
