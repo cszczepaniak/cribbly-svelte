@@ -50,18 +50,26 @@ export const actions: Actions = {
 		let result = schema.safeParse(formData);
 		if (!result.success) {
 			const errors = result.error.flatten();
-			return fail(400, { errors });
+			return fail(400, { formErrors: errors.fieldErrors });
 		}
 
-		await prisma.game.update({
+		let updateResult = await prisma.game.updateMany({
 			where: {
 				id: result.data.gameID,
+				winner: null,
+				loserScore: null,
 			},
 			data: {
 				winner: result.data.teamID,
 				loserScore: result.data.loserScore,
 			},
 		});
+
+		if (updateResult.count === 0) {
+			return fail(400, {
+				updateError: true,
+			})
+		}
 
 		client.notifyGameUpdate({
 			gameID: result.data.gameID,
