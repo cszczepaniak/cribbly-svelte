@@ -1,4 +1,5 @@
-import type { Division, Player } from "@prisma/client";
+import { gameKindTournament, type gameKind } from "$lib/utils/games";
+import type { Division, Game, Player } from "@prisma/client";
 
 type Team = {
 	id: string;
@@ -19,7 +20,10 @@ type TeamWithStats = Team & {
 	totalScore: number;
 };
 
-export function computeStatsForTeams(teams: Team[], completedGames: CompletedGame[]) {
+export function computeStatsForTeams(
+	teams: Team[],
+	completedGames: CompletedGame[],
+): TeamWithStats[] {
 	return teams
 		.map(t => ({
 			...t,
@@ -37,6 +41,27 @@ export function computeStatsForTeams(teams: Team[], completedGames: CompletedGam
 				}, 0),
 		}))
 		.sort(teamIsLess);
+}
+
+export function generateTournamentGames(teams: TeamWithStats[]) {
+	// Double-check that they're sorted, then take the top 32 teams.
+	teams = teams.sort(teamIsLess).slice(0, 32);
+
+	let upperSeeds = teams.slice(0, 16);
+	let lowerSeeds = teams.slice(16).reverse();
+
+	let games: { kind: gameKind; team1ID: string; team2ID: string }[] = [];
+	for (let i = 0; i < 16; i++) {
+		let t1 = upperSeeds[i];
+		let t2 = lowerSeeds[i];
+		games.push({
+			kind: gameKindTournament,
+			team1ID: t1.id,
+			team2ID: t2.id,
+		});
+	}
+
+	return games;
 }
 
 const hasNoGames = (t: TeamWithStats) => t.losses + t.wins + t.totalScore === 0;
