@@ -37,13 +37,6 @@
 			division = "";
 		}
 	}
-
-	const getPlayers = (players: { firstName: string; lastName: string }[]) => {
-		if (!players || players.length === 0) {
-			return "No Players";
-		}
-		return players.map(p => `${p.firstName} ${p.lastName}`).join(", ");
-	};
 </script>
 
 <div class="flex">
@@ -145,7 +138,7 @@
 	</div>
 
 	<div class="p-2">
-		{#each data.divisions as d (d.id)}
+		{#each data.divisions.filter(d => d.name !== division) as d (d.id)}
 			<form
 				method="POST"
 				action="?/addTeamToDivision"
