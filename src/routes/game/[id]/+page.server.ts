@@ -12,10 +12,14 @@ export const load: PageServerLoad = async ({ params }) => {
 		},
 	});
 
+	if (!game) {
+		throw new Error(`could not find game with id [${params.id}]`);
+	}
+
 	let teams = await prisma.team.findMany({
 		where: {
 			id: {
-				in: [game?.team1ID ?? "", game?.team2ID ?? ""],
+				in: [game.team1ID, game.team2ID],
 			},
 		},
 		select: {
@@ -24,12 +28,22 @@ export const load: PageServerLoad = async ({ params }) => {
 		},
 	});
 
+	let team1 = teams.find(t => t.id === game?.team1ID);
+	let team2 = teams.find(t => t.id === game?.team2ID);
+
+	if (!team1) {
+		throw new Error(`could not find team with id [${game.team1ID}]`);
+	}
+
+	if (!team2) {
+		throw new Error(`could not find team with id [${game.team2ID}]`);
+	}
+
 	return {
 		game: {
 			...game,
-			team1: teams.find(t => t.id === game?.team1ID),
-			team2: teams.find(t => t.id === game?.team2ID),
-			complete: !!game?.loserScore && !!game?.winner,
+			team1,
+			team2,
 		},
 	};
 };
@@ -40,6 +54,8 @@ const scoreSchema = zfd.formData({
 	loserScore: zfd.numeric(z.number().min(0).max(120)),
 });
 
+type flattenedErrors = z.inferFlattenedErrors<typeof scoreSchema>;
+
 const client = subscribeToGameUpdates();
 
 export const actions: Actions = {
@@ -49,7 +65,7 @@ export const actions: Actions = {
 
 		let result = schema.safeParse(formData);
 		if (!result.success) {
-			const errors = result.error.flatten();
+			const errors = result.error.flatten() as flattenedErrors;
 			return fail(400, { formErrors: errors.fieldErrors });
 		}
 
@@ -71,7 +87,6 @@ export const actions: Actions = {
 			});
 		}
 
-		console.log("notifying...");
 		client.notifyGameUpdate({
 			gameID: result.data.gameID,
 			winnerID: result.data.teamID,
