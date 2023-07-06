@@ -57,7 +57,9 @@ function subscribeToChannel(c: Channel) {
 			onMount(() => {
 				client.subscribe();
 
-				return client.unsubscribe();
+				return () => {
+					client.unsubscribe();
+				};
 			});
 		} else {
 			client.subscribe();

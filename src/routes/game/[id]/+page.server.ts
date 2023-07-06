@@ -71,6 +71,7 @@ export const actions: Actions = {
 			});
 		}
 
+		console.log("notifying...");
 		client.notifyGameUpdate({
 			gameID: result.data.gameID,
 			winnerID: result.data.teamID,
