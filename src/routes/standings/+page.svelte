@@ -4,6 +4,7 @@
 	import { getTeamName } from "$lib/utils/teams";
 	import { subscribeToGameUpdates } from "$lib/realtime";
 	import { flip } from "svelte/animate";
+	import { computeStatsForTeams } from "$lib/games";
 
 	export let data: PageData;
 
@@ -44,66 +45,18 @@
 		completedGames = games.filter(g => g.loserScore !== null && g.winner !== null);
 	}
 
-	let teamsWithStats: ((typeof data.teams)[number] & {
-		wins: number;
-		losses: number;
-		totalScore: number;
-	})[] = [];
+	let teamsWithStats: ReturnType<typeof computeStatsForTeams> = [];
 	$: {
-		teamsWithStats = teams.map(t => ({
-			...t,
-			wins: completedGames.filter(g => g.winner === t.id).length,
-			losses: completedGames.filter(
-				g => (g.team1ID === t.id || g.team2ID === t.id) && g.winner !== t.id,
-			).length,
-			totalScore: completedGames
-				.filter(g => g.team1ID === t.id || g.team2ID === t.id)
-				.reduce((score, g) => {
-					if (g.winner === t.id) {
-						return score + 121;
-					}
-					return score + (g.loserScore ?? 0);
-				}, 0),
-		}));
+		teamsWithStats = computeStatsForTeams(teams, completedGames);
 	}
 
 	const tournamentCutoff = 32;
-	let sortedTeams: ((typeof teamsWithStats)[number] & { inTournament: boolean })[] = [];
+	let teamsWithCutoff: ((typeof teamsWithStats)[number] & { inTournament: boolean })[] = [];
 	$: {
-		sortedTeams = teamsWithStats
-			.sort((a, b) => {
-				// Put teams with no recorded games at the bottom.
-				if (hasNoGames(a) && !hasNoGames(b)) {
-					return 1;
-				} else if (!hasNoGames(a) && hasNoGames(b)) {
-					return -1;
-				}
-
-				// Put teams with the highest number of wins furthest at the top.
-				if (a.wins > b.wins) {
-					// More wins towards the top.
-					return -1;
-				} else if (a.wins < b.wins) {
-					return 1;
-				}
-
-				// Put teams with fewer losses next.
-				if (a.losses < b.losses) {
-					return -1;
-				} else if (a.losses > b.losses) {
-					return 1;
-				}
-
-				// Then sort by total score.
-				if (a.totalScore > b.totalScore) {
-					return -1;
-				} else if (a.totalScore < b.totalScore) {
-					return 1;
-				}
-
-				return 0;
-			})
-			.map((t, i) => ({ ...t, inTournament: i < tournamentCutoff && !hasNoGames(t) }));
+		teamsWithCutoff = teamsWithStats.map((t, i) => ({
+			...t,
+			inTournament: i < tournamentCutoff && !hasNoGames(t),
+		}));
 	}
 </script>
 
@@ -124,7 +77,7 @@
 			{/if}
 		</TableHead>
 		<TableBody>
-			{#each sortedTeams as team, i (team.id)}
+			{#each teamsWithCutoff as team, i (team.id)}
 				<!-- We're using tr directly here with the styles copied from flowbite -- this is the only way to use animate:flip -->
 				<tr
 					class={`border-b last:border-b-0 ${
