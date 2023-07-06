@@ -28,7 +28,6 @@
 	subscribeToGameUpdates({
 		eventFilter: "score-submitted",
 		callback: update => {
-			console.log(update);
 			if (update.gameID !== data.game.id) {
 				return;
 			}
