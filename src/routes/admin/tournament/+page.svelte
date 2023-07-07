@@ -14,5 +14,15 @@
 </form>
 
 {#each data.games as game (game.id)}
-	<div>{getTeamName(game.team1.players)} VS {getTeamName(game.team2.players)}</div>
+	<div class="flex justify-between space-x-4">
+		<div>
+			{getTeamName(game.team1.players)}
+			{`[${game.team1.tournamentSeed}]`}
+		</div>
+		VS
+		<div>
+			{getTeamName(game.team2.players)}
+			{`[${game.team2.tournamentSeed}]`}
+		</div>
+	</div>
 {/each}
