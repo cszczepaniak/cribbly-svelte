@@ -13,7 +13,14 @@
 		NavHamburger,
 		NavUl,
 		NavLi,
+		Toggle,
 	} from "flowbite-svelte";
+	import { devTools } from "$lib/stores/devtools";
+
+	let devToolsEnabled = false;
+	$: {
+		devTools.set(devToolsEnabled);
+	}
 </script>
 
 <Navbar let:hidden let:toggle>
@@ -42,6 +49,11 @@
 					</DropdownHeader>
 					<DropdownItem>
 						<a href="/admin">Admin</a>
+					</DropdownItem>
+					<DropdownDivider />
+					<DropdownItem>
+						<span>Enable Dev Tools</span>
+						<Toggle class="mt-2" bind:checked={devToolsEnabled} />
 					</DropdownItem>
 					<DropdownDivider />
 					<DropdownItem on:click={signOut}>Sign out</DropdownItem>

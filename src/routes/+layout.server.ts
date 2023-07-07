@@ -4,8 +4,10 @@ import type { LayoutServerLoad } from "./$types";
 export const load: LayoutServerLoad = async ({ locals, url }) => {
 	const session = await locals.getSession();
 
-	const isDev = url.searchParams.has("dev") && url.searchParams.get("dev") === "true";
-	let mergeSession = (isAdmin: boolean) => ({ session, isAdmin, isDev });
+	let mergeSession = (isAdmin: boolean) => ({
+		session,
+		isAdmin,
+	});
 
 	if (!session?.user?.email) {
 		return mergeSession(false);
