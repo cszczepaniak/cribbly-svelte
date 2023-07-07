@@ -52,6 +52,6 @@
 	<NavHamburger on:click={toggle} />
 </Navbar>
 
-<main class="mx-auto container">
+<main class="mx-auto max-w-4xl container">
 	<slot />
 </main>
