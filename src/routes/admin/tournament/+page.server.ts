@@ -46,8 +46,29 @@ export const actions: Actions = {
 		const teamsWithStats = computeStatsForTeams(teams, games);
 		const tournamentGames = generateTournamentGames(teamsWithStats);
 
-		await prisma.tournamentGame.createMany({
-			data: tournamentGames,
+		await prisma.$transaction(async () => {
+			await prisma.tournamentGame.createMany({
+				data: tournamentGames.map(g => ({ team1ID: g.team1ID, team2ID: g.team2ID })),
+			});
+
+			for (let g of tournamentGames) {
+				await prisma.team.update({
+					where: {
+						id: g.team1ID,
+					},
+					data: {
+						tournamentSeed: g.team1Seed,
+					},
+				});
+				await prisma.team.update({
+					where: {
+						id: g.team2ID,
+					},
+					data: {
+						tournamentSeed: g.team2Seed,
+					},
+				});
+			}
 		});
 	},
 };

@@ -44,18 +44,23 @@ export function computeStatsForTeams(
 
 export function generateTournamentGames(teams: TeamWithStats[]) {
 	// Double-check that they're sorted, then take the top 32 teams.
-	teams = teams.sort(teamIsLess).slice(0, 32);
+	let seededTeams = teams
+		.sort(teamIsLess)
+		.slice(0, 32)
+		.map((t, i) => ({ ...t, seed: i + 1 }));
 
-	let upperSeeds = teams.slice(0, 16);
-	let lowerSeeds = teams.slice(16).reverse();
+	let upperSeeds = seededTeams.slice(0, 16);
+	let lowerSeeds = seededTeams.slice(16).reverse();
 
-	let games: { team1ID: string; team2ID: string }[] = [];
+	let games: { team1ID: string; team1Seed: number; team2ID: string; team2Seed: number }[] = [];
 	for (let i = 0; i < 16; i++) {
 		let t1 = upperSeeds[i];
 		let t2 = lowerSeeds[i];
 		games.push({
 			team1ID: t1.id,
+			team1Seed: t1.seed,
 			team2ID: t2.id,
+			team2Seed: t2.seed,
 		});
 	}
 

@@ -28,6 +28,8 @@ model Team {
 
     division   Division? @relation(fields: [divisionID], references: [id])
     divisionID String?
+
+    tournamentSeed Int?
 }
 
 model Division {
