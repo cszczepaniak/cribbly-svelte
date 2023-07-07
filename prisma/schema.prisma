@@ -35,10 +35,10 @@ model Division {
 
     name  String
     teams Team[]
-    games Game[]
+    games PrelimGame[]
 }
 
-model Game {
+model PrelimGame {
     id String @id @default(cuid())
 
     team1ID String
@@ -52,9 +52,6 @@ model Game {
 
     // Unique index to ensure each team can only see each other once in the prelims and once in the tournament
     @@unique([team1ID, team2ID])
-    // Index by team2 so we can lookup by team2 efficiently; the unique index above covers team1
-    @@index([team2ID])
-    @@index([winner])
 }
 
 model TournamentGame {
@@ -68,8 +65,6 @@ model TournamentGame {
 
     // Unique index to ensure each team can only see each other once in the prelims and once in the tournament
     @@unique([team1ID, team2ID])
-    // Index by team2 so we can lookup by team2 efficiently; the unique index above covers team1
-    @@index([team2ID])
 }
 
 model Admin {

@@ -5,7 +5,7 @@ import { generatePrelimGames } from "$lib/server/games/games";
 import { gameKindPrelim } from "$lib/utils/games";
 
 const getPrelimGames = async () => {
-	const games = await prisma.game.findMany({
+	const games = await prisma.prelimGame.findMany({
 		select: {
 			id: true,
 			division: true,
@@ -13,9 +13,6 @@ const getPrelimGames = async () => {
 			team2ID: true,
 			loserScore: true,
 			winner: true,
-		},
-		where: {
-			kind: gameKindPrelim,
 		},
 	});
 
@@ -80,7 +77,7 @@ export const actions: Actions = {
 
 		const games = generatePrelimGames(divs);
 
-		await prisma.game.createMany({
+		await prisma.prelimGame.createMany({
 			data: Array.from(games.entries()).flatMap(([divID, pairs]) =>
 				pairs.map(pair => ({
 					kind: gameKindPrelim,
@@ -93,10 +90,6 @@ export const actions: Actions = {
 		});
 	},
 	deleteAllGames: async () => {
-		await prisma.game.deleteMany({
-			where: {
-				kind: gameKindPrelim,
-			},
-		});
+		await prisma.prelimGame.deleteMany();
 	},
 };

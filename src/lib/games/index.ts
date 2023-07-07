@@ -1,5 +1,5 @@
 import { gameKindTournament, type gameKind } from "$lib/utils/games";
-import type { Division, Game, Player } from "@prisma/client";
+import type { Division, Player } from "@prisma/client";
 
 type Team = {
 	id: string;

@@ -12,11 +12,7 @@ export const load: PageServerLoad = async () => {
 		},
 	});
 
-	const games = await prisma.game.findMany({
-		where: {
-			kind: gameKindPrelim,
-		},
-	});
+	const games = await prisma.prelimGame.findMany();
 
 	return {
 		teams,

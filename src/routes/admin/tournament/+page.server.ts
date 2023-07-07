@@ -5,11 +5,7 @@ import { gameKindPrelim, gameKindTournament } from "$lib/utils/games";
 import { computeStatsForTeams, generateTournamentGames } from "$lib/games";
 
 export const load: PageServerLoad = async () => {
-	const games = await prisma.game.findMany({
-		where: {
-			kind: gameKindTournament,
-		},
-	});
+	const games = await prisma.tournamentGame.findMany();
 
 	const teamIDs = games.reduce(
 		(prev, curr) => [...prev, curr.team1ID, curr.team2ID],
@@ -46,16 +42,12 @@ export const actions: Actions = {
 			},
 		});
 
-		const games = await prisma.game.findMany({
-			where: {
-				kind: gameKindPrelim,
-			},
-		});
+		const games = await prisma.prelimGame.findMany();
 
 		const teamsWithStats = computeStatsForTeams(teams, games);
 		const tournamentGames = generateTournamentGames(teamsWithStats);
 
-		await prisma.game.createMany({
+		await prisma.tournamentGame.createMany({
 			data: tournamentGames,
 		});
 	},

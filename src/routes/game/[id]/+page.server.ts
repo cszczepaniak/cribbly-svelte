@@ -6,7 +6,7 @@ import { z } from "zod";
 import { subscribeToGameUpdates } from "$lib/realtime";
 
 export const load: PageServerLoad = async ({ params }) => {
-	let game = await prisma.game.findUnique({
+	let game = await prisma.prelimGame.findUnique({
 		where: {
 			id: params.id,
 		},
@@ -69,7 +69,7 @@ export const actions: Actions = {
 			return fail(400, { formErrors: errors.fieldErrors });
 		}
 
-		let updateResult = await prisma.game.updateMany({
+		let updateResult = await prisma.prelimGame.updateMany({
 			where: {
 				id: result.data.gameID,
 				winner: null,
