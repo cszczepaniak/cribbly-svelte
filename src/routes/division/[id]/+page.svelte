@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { Card } from "flowbite-svelte";
+	import { Button, Card } from "flowbite-svelte";
 	import type { PageData } from "./$types";
 	import { getTeamName } from "$lib/utils/teams";
 	import { page } from "$app/stores";
-	import type { Game, Player, Team } from "@prisma/client";
+	import { devTools } from "$lib/stores/devtools";
+	import type { Player, PrelimGame } from "@prisma/client";
+	import { enhance } from "$app/forms";
 
 	export let data: PageData;
 
@@ -22,7 +24,7 @@
 		});
 	}
 
-	const teamName = (team: { id: string; players: Player[] } | undefined, game: Game) => {
+	const teamName = (team: { id: string; players: Player[] } | undefined, game: PrelimGame) => {
 		let name = getTeamName(team?.players);
 		if (game.winner === team?.id) {
 			return name + " 🏆";
@@ -51,6 +53,12 @@
 			{/if}
 		{/each}
 	</div>
+	{#if $devTools && $page.data.isAdmin}
+		<form method="POST" action="?/completeAll" use:enhance>
+			<input type="hidden" name="divisionID" value={$page.params.id} />
+			<Button type="submit">Complete All</Button>
+		</form>
+	{/if}
 {:else}
 	No Games!
 {/if}

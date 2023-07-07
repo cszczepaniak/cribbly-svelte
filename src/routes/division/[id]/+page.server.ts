@@ -46,4 +46,29 @@ export const load: PageServerLoad = async ({ params }) => {
 	};
 };
 
-export const actions: Actions = {};
+export const actions: Actions = {
+	completeAll: async event => {
+		const formData = await event.request.formData();
+		const divisionID = String(formData.get("divisionID"));
+
+		const gamesToComplete = await prisma.prelimGame.findMany({
+			where: {
+				divisionID,
+				loserScore: null,
+				winner: null,
+			},
+		});
+
+		for (let g of gamesToComplete) {
+			await prisma.prelimGame.update({
+				where: {
+					id: g.id,
+				},
+				data: {
+					winner: g.team1ID,
+					loserScore: 113,
+				},
+			});
+		}
+	},
+};
