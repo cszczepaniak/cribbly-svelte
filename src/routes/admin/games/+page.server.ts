@@ -2,7 +2,6 @@ import { fail, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import { prisma } from "$lib/server/db/client";
 import { generatePrelimGames } from "$lib/server/games/games";
-import { gameKindPrelim } from "$lib/utils/games";
 
 const getPrelimGames = async () => {
 	const games = await prisma.prelimGame.findMany({
@@ -80,7 +79,6 @@ export const actions: Actions = {
 		await prisma.prelimGame.createMany({
 			data: Array.from(games.entries()).flatMap(([divID, pairs]) =>
 				pairs.map(pair => ({
-					kind: gameKindPrelim,
 					team1ID: pair[0],
 					team2ID: pair[1],
 					divisionID: divID,

@@ -1,7 +1,6 @@
 import { prisma } from "$lib/server/db/client";
 import type { Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
-import { gameKindPrelim, gameKindTournament } from "$lib/utils/games";
 import { computeStatsForTeams, generateTournamentGames } from "$lib/games";
 
 export const load: PageServerLoad = async () => {

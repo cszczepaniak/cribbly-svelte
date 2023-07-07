@@ -1,4 +1,3 @@
-import { gameKindTournament, type gameKind } from "$lib/utils/games";
 import type { Division, Player } from "@prisma/client";
 
 type Team = {
@@ -50,12 +49,11 @@ export function generateTournamentGames(teams: TeamWithStats[]) {
 	let upperSeeds = teams.slice(0, 16);
 	let lowerSeeds = teams.slice(16).reverse();
 
-	let games: { kind: gameKind; team1ID: string; team2ID: string }[] = [];
+	let games: { team1ID: string; team2ID: string }[] = [];
 	for (let i = 0; i < 16; i++) {
 		let t1 = upperSeeds[i];
 		let t2 = lowerSeeds[i];
 		games.push({
-			kind: gameKindTournament,
 			team1ID: t1.id,
 			team2ID: t2.id,
 		});
