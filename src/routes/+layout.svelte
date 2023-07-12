@@ -16,11 +16,6 @@
 		Toggle,
 	} from "flowbite-svelte";
 	import { devTools } from "$lib/stores/devtools";
-
-	let devToolsEnabled = false;
-	$: {
-		devTools.set(devToolsEnabled);
-	}
 </script>
 
 <Navbar let:hidden let:toggle>
@@ -53,7 +48,7 @@
 					<DropdownDivider />
 					<DropdownItem>
 						<span>Enable Dev Tools</span>
-						<Toggle class="mt-2" bind:checked={devToolsEnabled} />
+						<Toggle class="mt-2" bind:checked={$devTools} />
 					</DropdownItem>
 					<DropdownDivider />
 					<DropdownItem on:click={signOut}>Sign out</DropdownItem>
