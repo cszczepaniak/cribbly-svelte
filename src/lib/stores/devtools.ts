@@ -1,9 +1,14 @@
 import { browser } from "$app/environment";
 import { writable } from "svelte/store";
 
-export const devTools = writable(
-	browser && localStorage.getItem("cribbly-svelte.devtools") === "true" ? true : false,
-);
+const initialValue = () => {
+	if (!browser) {
+		return false;
+	}
+	return localStorage.getItem("cribbly-svelte.devtools") === "true";
+};
+
+export const devTools = writable(initialValue());
 
 devTools.subscribe(val => {
 	if (!browser) {
